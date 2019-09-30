@@ -1,0 +1,20 @@
+diff --git a/sites/all/modules/contrib/hide_php_fatal_error/hide_php_fatal_error.module b/sites/all/modules/contrib/hide_php_fatal_error/hide_php_fatal_error.module
+index 1da65eb..2bac80e 100644
+--- a/sites/all/modules/contrib/hide_php_fatal_error/hide_php_fatal_error.module
++++ b/sites/all/modules/contrib/hide_php_fatal_error/hide_php_fatal_error.module
+@@ -64,7 +64,7 @@ function hide_php_fatal_error_page() {
+  */
+ function hide_php_fatal_error_shutdown() {
+   if(!is_null($error = error_get_last()) && $error['type'] === E_ERROR) {
+-    header('Location: ' . HIDE_PHP_FATAL_ERROR_URL);
++    header('Location: /page-not-found.html');
+ 
+     // We need to reuse the code from _drupal_error_handler_real() to
+     // force the maintenance page.
+@@ -91,4 +91,4 @@ function hide_php_fatal_error_shutdown() {
+     watchdog('php', '%type: !message (line %line of %file).', $error, $error['severity_level']);
+     exit;
+   }
+-}
++}
+\ No newline at end of file
