@@ -154,6 +154,7 @@ function recacher_expire_cache($urls, $wildcards, $object_type, $object) {
  *   Returns the number of URLs that were crawled, zero if none.
  */
 function recacher_crawler($trimqueue = TRUE) {
+  global $base_url;    
   if (lock_acquire(__FUNCTION__)) {
     // ORDER BY expirations, descending, so that the most expired URLs are
     // scanned first.
@@ -205,6 +206,11 @@ function recacher_crawler($trimqueue = TRUE) {
     }
 
     foreach ($dburls as $dburl) {
+      if (strpos($dburl, $base_url) !== false){
+        $dburl = $dburl;
+      }else{
+        $dburl = $base_url.'/'.$dburl;
+      }  
       foreach ($recacher_role_options as $role => $options) {
         // Queue up the request.
         httprl_request($dburl, $options);
@@ -224,6 +230,11 @@ function recacher_crawler($trimqueue = TRUE) {
       // Report success and issue a warning for URLs that did not return code 200.
       $messages = array();
       foreach ($dburls as $dburl) {
+        if (strpos($dburl, $base_url) !== false){
+            $dburl = $dburl;
+        }else{
+            $dburl = $base_url.'/'.$dburl;
+        }          
         if ($codes[$dburl] <> 200) {
           $success = t('UNsuccessful');
           $someerror = TRUE;
