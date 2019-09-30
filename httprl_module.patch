@@ -1,0 +1,17 @@
+diff --git a/sites/all/modules/contrib/httprl/httprl.module b/sites/all/modules/contrib/httprl/httprl.module
+index 78bd90a..f1f637f 100644
+--- a/sites/all/modules/contrib/httprl/httprl.module
++++ b/sites/all/modules/contrib/httprl/httprl.module
+@@ -2280,10 +2280,10 @@ function httprl_decode_data(&$result) {
+   }
+   // Decompress if compressed.
+   elseif (isset($result->headers['content-encoding'])) {
+-    if ($result->headers['content-encoding'] == 'gzip') {
++    if ($result->headers['content-encoding'] == 'gzip' && !empty($result->data)) {
+       $result->data = gzinflate(substr($result->data, 10));
+     }
+-    elseif ($result->headers['content-encoding'] == 'deflate') {
++    elseif ($result->headers['content-encoding'] == 'deflate' && !empty($result->data)) {
+       $result->data = gzinflate($result->data);
+     }
+   }

@@ -2280,10 +2280,10 @@ function httprl_decode_data(&$result) {
   }
   // Decompress if compressed.
   elseif (isset($result->headers['content-encoding'])) {
-    if ($result->headers['content-encoding'] == 'gzip') {
+    if ($result->headers['content-encoding'] == 'gzip' && !empty($result->data)) {
       $result->data = gzinflate(substr($result->data, 10));
     }
-    elseif ($result->headers['content-encoding'] == 'deflate') {
+    elseif ($result->headers['content-encoding'] == 'deflate' && !empty($result->data)) {
       $result->data = gzinflate($result->data);
     }
   }
