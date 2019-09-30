@@ -1,0 +1,16 @@
+diff --git a/sites/all/modules/contrib/webform_zendesk/webform_zendesk.module b/sites/all/modules/contrib/webform_zendesk/webform_zendesk.module
+index 36ac574..b7a7638 100644
+--- a/sites/all/modules/contrib/webform_zendesk/webform_zendesk.module
++++ b/sites/all/modules/contrib/webform_zendesk/webform_zendesk.module
+@@ -226,5 +226,11 @@ function webform_zendesk_api_call($data = array(), $command = 'tickets.json', $t
+   curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+   $output = curl_exec($ch);
+   curl_close($ch);
++  watchdog('Zendesk', 'Zendesk ticket creation response : %response', array('%response' => $output), WATCHDOG_INFO, $link = NULL);
++  $file = $_SERVER['DOCUMENT_ROOT']."/zendesk_log";
++  if(!is_dir($file)){   
++    drupal_mkdir($file,0777, true);
++  }
++  $myfile = file_put_contents($file.'/log.txt', date('d-m-Y h:i:s').'   Request data: '.json_encode($data).'  Response:'.$output.PHP_EOL , FILE_APPEND | LOCK_EX);
+   return json_decode($output);
+ }
